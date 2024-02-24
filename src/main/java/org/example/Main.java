@@ -2,6 +2,7 @@ package org.example;
 
 import org.example.constant.Constants;
 import org.example.display.Window;
+import org.example.handler.HandlerMain;
 
 import java.awt.*;
 
@@ -9,8 +10,8 @@ public class Main extends Canvas implements Runnable {
 
     private Window window;
     private Thread thread;
-
     private boolean isRunning = false;
+    private HandlerMain handler;
 
     public Main(){
         //instantiate window code from here
@@ -32,6 +33,10 @@ public class Main extends Canvas implements Runnable {
             this.thread = new Thread(this, "Additional_Thread_1");
         }
 
+        //Handler instantiation
+        if(this.handler == null){
+            this.handler = new HandlerMain();
+        }
 
         start();
     }
@@ -119,11 +124,20 @@ public class Main extends Canvas implements Runnable {
 
         //additional render calls go here
 
+        //Handler render
+        if(this.handler != null){
+            this.handler.render(g);
+        }
+
         bs.show();
         g.dispose();
     }
 
     private void tick(){
+        //Handler tick
+        if(this.handler != null){
+            this.handler.tick();
+        }
 
     }
 
