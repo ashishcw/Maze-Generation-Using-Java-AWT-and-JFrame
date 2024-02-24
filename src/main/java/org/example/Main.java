@@ -3,6 +3,7 @@ package org.example;
 import org.example.constant.Constants;
 import org.example.display.Window;
 import org.example.handler.HandlerMain;
+import org.example.objects.node.Node;
 
 import java.awt.*;
 
@@ -11,7 +12,8 @@ public class Main extends Canvas implements Runnable {
     private Window window;
     private Thread thread;
     private boolean isRunning = false;
-    private HandlerMain handler;
+    private HandlerMain mainHandler;
+    private Node node;
 
     public Main(){
         //instantiate window code from here
@@ -34,8 +36,21 @@ public class Main extends Canvas implements Runnable {
         }
 
         //Handler instantiation
-        if(this.handler == null){
-            this.handler = new HandlerMain();
+        if(this.mainHandler == null){
+            this.mainHandler = new HandlerMain();
+        }
+
+        //Node instantiation
+        //this.handler.addObjectToList(new TempObject());
+        Node.createNodeGrid();
+        if(this.node == null){
+            this.node = Node.nodes[0][0];
+        }
+
+        for(int i = 0; i < Node.nodes.length; i++){
+            for(int j = 0; j < Node.nodes[i].length; j++){
+                this.mainHandler.addObjectToList(Node.nodes[i][j]);
+            }
         }
 
         start();
@@ -122,11 +137,13 @@ public class Main extends Canvas implements Runnable {
 
         g.fillRect(0, 0, Constants.WINDOW_WIDTH, Constants.WINDOW_HEIGHT);
 
+
+
         //additional render calls go here
 
         //Handler render
-        if(this.handler != null){
-            this.handler.render(g);
+        if(this.mainHandler != null){
+            this.mainHandler.render(g);
         }
 
         bs.show();
@@ -135,8 +152,8 @@ public class Main extends Canvas implements Runnable {
 
     private void tick(){
         //Handler tick
-        if(this.handler != null){
-            this.handler.tick();
+        if(this.mainHandler != null){
+            this.mainHandler.tick();
         }
 
     }
